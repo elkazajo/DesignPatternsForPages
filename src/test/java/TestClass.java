@@ -33,7 +33,7 @@ public class TestClass {
         logoutPage = new LogoutPage(driver);
     }
 
-    @Test(priority = 1)
+    @Test
     public void loginSuccessAssert() {
         loginPage.start(URL).inputUserName(userName)
                 .clickLoginButton()
@@ -42,13 +42,13 @@ public class TestClass {
         Assert.assertTrue(loginPage.verifyLoginSuccess());
     }
 
-    @Test(priority = 2)
+    @Test(dependsOnMethods = { "loginSuccessAssert" })
     public void clickToComposeLetterAssert() {
         mainPage.clickToComposeLetter();
         Assert.assertTrue(mainPage.isLetterOpen());
     }
 
-    @Test(priority = 3)
+    @Test(dependsOnMethods = { "clickToComposeLetterAssert" })
     public void letterCreationAssert() {
         letterPage.enterAddressee(addressee)
                 .enterSubject(subject)
@@ -57,25 +57,25 @@ public class TestClass {
                 .closeLetterPage();
         Assert.assertTrue(letterPage.isStillOpen());
     }
-    @Test(priority = 4)
+    @Test(dependsOnMethods = { "letterCreationAssert" })
     public void letterIsInDraftsAssert() {
         draftsPage.openDrafts();
         Assert.assertTrue(draftsPage.isInDrafts());
     }
 
-    @Test(priority = 5)
+    @Test(dependsOnMethods = { "letterIsInDraftsAssert" })
     public void addresseeAssert() {
         draftsLetterPage.openLastSaved();
         Assert.assertEquals(draftsLetterPage.verifyAddressee(), addressee);
     }
 
-    @Test(priority = 6)
+    @Test(dependsOnMethods = { "addresseeAssert" })
     public void mailSentAssert() {
         draftsLetterPage.sendMail();
         Assert.assertTrue(draftsLetterPage.verifyMailIsSent());
     }
 
-    @Test(priority = 7)
+    @Test(dependsOnMethods = { "mailSentAssert" })
     public void logoutAssert() {
         logoutPage.pressDropdown().pressLogout();
         Assert.assertTrue(logoutPage.isLogout());
