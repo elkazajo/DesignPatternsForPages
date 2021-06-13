@@ -33,6 +33,11 @@ public class TestClass {
         logoutPage = new LogoutPage(driver);
     }
 
+    @AfterClass
+    public void tearDown() {
+        driver.quit();
+    }
+
     @Test
     public void loginSuccessAssert() {
         loginPage.start(URL).inputUserName(userName)
@@ -79,10 +84,5 @@ public class TestClass {
     public void logoutAssert() {
         logoutPage.pressDropdown().pressLogout();
         Assert.assertTrue(logoutPage.isLogout());
-    }
-
-    @AfterClass
-    public void tearDown() {
-        driver.quit();
     }
 }
